@@ -1,0 +1,194 @@
+<div class="min-h-screen bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 p-4 sm:p-8 font-outfit text-white overflow-x-hidden">
+  <div class="w-full max-w-5xl mx-auto bg-slate-800/80 rounded-2xl shadow-2xl p-4 sm:p-10 border border-purple-700">
+
+    <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-center text-purple-400">✏️ Edit User</h2>
+
+    <!-- Form -->
+    <form *ngIf="!submitted" [formGroup]="form" class="space-y-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- First Name -->
+        <div>
+          <label class="block mb-1 text-slate-300">First Name</label>
+          <input type="text"
+            class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500"
+            formControlName="firstName" />
+          <p *ngIf="form.controls['firstName'].touched && form.controls['firstName'].invalid"
+            class="text-red-400 text-xs mt-1">
+            First Name is required
+          </p>
+        </div>
+
+        <!-- Last Name -->
+        <div>
+          <label class="block mb-1 text-slate-300">Last Name</label>
+          <input type="text" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="lastName" />
+          <p *ngIf="form.controls['lastName'].touched && form.controls['lastName'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Last Name is required
+          </p>
+        </div>
+
+        <!-- Username -->
+        <div>
+          <label class="block mb-1 text-slate-300">Username</label>
+          <input type="text" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="username" />
+          <p *ngIf="form.controls['username'].touched && form.controls['username'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Username is required
+          </p>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block mb-1 text-slate-300">Email</label>
+          <input type="email" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="email" />
+          <p *ngIf="form.controls['email'].touched && form.controls['email'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Valid Email is required
+          </p>
+        </div>
+
+        <!-- Phone -->
+        <div>
+          <label class="block mb-1 text-slate-300">Phone</label>
+          <input type="text" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="phone" />
+          <p *ngIf="form.controls['phone'].touched && form.controls['phone'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Phone is required
+          </p>
+        </div>
+
+        <!-- Age -->
+        <div>
+          <label class="block mb-1 text-slate-300">Age</label>
+          <input type="number" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="age" min="0" />
+          <p *ngIf="form.controls['age'].touched && form.controls['age'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Age is required
+          </p>
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label class="block mb-1 text-slate-300">Gender</label>
+          <select class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="gender">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          <p *ngIf="form.controls['gender'].touched && form.controls['gender'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Gender is required
+          </p>
+        </div>
+
+        <!-- Blood Group -->
+        <div>
+          <label class="block mb-1 text-slate-300">Blood Group</label>
+          <select class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="bloodGroup">
+            <option value="">Select Blood Group</option>
+            <option *ngFor="let bg of ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']" [value]="bg">{{ bg }}</option>
+          </select>
+          <p *ngIf="form.controls['bloodGroup'].touched && form.controls['bloodGroup'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Blood Group is required
+          </p>
+        </div>
+
+        <!-- Birth Date -->
+        <div>
+          <label class="block mb-1 text-slate-300">Birth Date</label>
+          <input type="date" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="birthDate" />
+          <p *ngIf="form.controls['birthDate'].touched && form.controls['birthDate'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Birth Date is required
+          </p>
+        </div>
+
+        <!-- Eye Color -->
+        <div>
+          <label class="block mb-1 text-slate-300">Eye Color</label>
+          <input type="text" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="eyeColor" />
+          <p *ngIf="form.controls['eyeColor'].touched && form.controls['eyeColor'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Eye color is required
+          </p>
+        </div>
+
+        <!-- Hair Color -->
+        <div>
+          <label class="block mb-1 text-slate-300">Hair Color</label>
+          <input type="text" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="hairColor" />
+          <p *ngIf="form.controls['hairColor'].touched && form.controls['hairColor'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Hair color is required
+          </p>
+        </div>
+
+        <!-- Hair Type -->
+        <div>
+          <label class="block mb-1 text-slate-300">Hair Type</label>
+          <input type="text" class="bg-slate-900 border border-purple-600 rounded-lg p-3 w-full text-white"
+            formControlName="hairType" />
+          <p *ngIf="form.controls['hairType'].touched && form.controls['hairType'].invalid"
+            class="text-red-400 text-xs mt-1">
+            Hair type is required
+          </p>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="pt-6 text-center">
+        <button type="button"
+          class="bg-purple-600 hover:bg-purple-700 transition px-6 py-3 rounded-xl text-white font-medium shadow-lg"
+          (click)="submit()">
+          💾 Update User
+        </button>
+      </div>
+    </form>
+
+    <!-- Toast Message -->
+    <div *ngIf="showToast"
+      class="fixed bottom-5 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+      ✅ User updated successfully!
+    </div>
+
+    <!-- Updated Details -->
+    <div *ngIf="submitted"
+      class="mt-8 bg-slate-900/90 rounded-xl p-6 shadow-xl text-slate-200 border border-purple-700">
+      <h3 class="text-xl font-bold text-green-400 mb-6 text-center">✅ Updated User Info</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+        <p><strong>First Name:</strong> {{ updatedUser.firstName }}</p>
+        <p><strong>Last Name:</strong> {{ updatedUser.lastName }}</p>
+        <p><strong>Username:</strong> {{ updatedUser.username }}</p>
+        <p><strong>Email:</strong> {{ updatedUser.email }}</p>
+        <p><strong>Phone:</strong> {{ updatedUser.phone }}</p>
+        <p><strong>Age:</strong> {{ updatedUser.age }}</p>
+        <p><strong>Gender:</strong> {{ updatedUser.gender }}</p>
+        <p><strong>Blood Group:</strong> {{ updatedUser.bloodGroup }}</p>
+        <p><strong>Birth Date:</strong> {{ updatedUser.birthDate }}</p>
+        <p><strong>Eye Color:</strong> {{ updatedUser.eyeColor }}</p>
+        <p><strong>Hair Color:</strong> {{ updatedUser.hairColor }}</p>
+        <p><strong>Hair Type:</strong> {{ updatedUser.hairType }}</p>
+      </div>
+
+      <div class="mt-8 text-center">
+        <button type="button" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-xl shadow"
+          (click)="goBack()">
+          🔙 Back to User List
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

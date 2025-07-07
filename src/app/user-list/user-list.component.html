@@ -1,0 +1,145 @@
+<div class="min-h-screen bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 font-outfit text-white">
+    <!-- Navbar -->
+    <div class="bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50 border-b border-purple-900/50">
+        <nav class="p-4 max-w-screen-xl mx-auto">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a class="flex items-center space-x-3">
+                    <img src="https://png.pngtree.com/png-vector/20241204/ourmid/pngtree-earth-globe-vector-design-png-image_14549869.png" class="h-8 md:h-10 animate-spin" />
+                    <span class="text-purple-300 text-xl md:text-3xl font-bold tracking-wide">User Data</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-4 md:p-8">
+        <!-- Search and Sort Controls -->
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <!-- Search -->
+            <div class="relative w-full md:max-w-xs">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-4 h-4 md:w-5 md:h-5 text-slate-400" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="text" [(ngModel)]="searchText" (input)="onSearchChange()"
+                    placeholder="Search by name or email"
+                    class="block w-full pl-10 p-2 text-sm rounded-xl bg-slate-800 text-white placeholder-slate-400 border border-purple-700 focus:ring-2 focus:ring-purple-500" />
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                <!-- Sort Toggle -->
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" name="sortToggle" [(ngModel)]="isAscending"
+                        (change)="sortUsers()" />
+                    <div
+                        class="relative w-9 h-5 bg-slate-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-400 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600">
+                    </div>
+                    <span class="ms-3 text-sm font-medium text-slate-200">Sort {{ isAscending ? 'A-Z' : 'Z-A' }}</span>
+                </label>
+
+                <!-- Add User Button -->
+                <button
+                    class="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 md:px-5 md:py-2 rounded-xl shadow-lg transition-all duration-300"
+                    (click)="onAddUser()">
+                    + Add User
+                </button>
+            </div>
+        </div>
+
+        <!-- User Table -->
+        <div class="overflow-x-auto">
+            <div class="min-w-full inline-block align-middle">
+                <table
+                    class="w-full max-w-7xl mx-auto backdrop-blur-sm bg-slate-800/80 text-white shadow-xl rounded-2xl overflow-hidden border border-slate-700">
+                    <thead class="bg-purple-800 text-white uppercase text-xs sm:text-sm tracking-wide">
+                        <tr>
+                            <th class="px-2 py-2 md:px-4 md:py-3">ID</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3">First Name</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3">Last Name</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3 hidden sm:table-cell">Age</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">Gender</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3 hidden lg:table-cell">Email</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3 hidden xl:table-cell">Phone</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3 hidden xl:table-cell">Address</th>
+                            <th class="px-2 py-2 md:px-4 md:py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="users.length > 0; else noData">
+                        <tr *ngFor="let user of users"
+                            class="hover:bg-purple-900/40 transition-colors border-t border-slate-700 text-slate-100">
+                            <td class="px-2 py-2 md:px-4 md:py-3">{{ user.id }}</td>
+                            <td class="px-2 py-2 md:px-4 md:py-3">{{ user.firstName }}</td>
+                            <td class="px-2 py-2 md:px-4 md:py-3">{{ user.lastName }}</td>
+                            <td class="px-2 py-2 md:px-4 md:py-3 hidden sm:table-cell">{{ user.age }}</td>
+                            <td class="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell capitalize">{{ user.gender }}</td>
+                            <td class="px-2 py-2 md:px-4 md:py-3 hidden lg:table-cell truncate max-w-xs">{{ user.email }}</td>
+                            <td class="px-2 py-2 md:px-4 md:py-3 hidden xl:table-cell">{{ user.phone }}</td>
+                            <td class="px-2 py-2 md:px-4 md:py-3 hidden xl:table-cell truncate max-w-xs">
+                                {{ user.address.address }}, {{ user.address.city }}
+                            </td>
+                            <td class="px-2 py-2 md:px-4 md:py-3 text-center space-x-1 md:space-x-2">
+                                <button class="text-purple-400 hover:text-purple-500 text-base md:text-lg" (click)="openModal(user)"
+                                    title="View Details">👁</button>
+                                <button class="text-yellow-400 hover:text-yellow-500 text-base md:text-lg" (click)="goToEdit(user)"
+                                    title="Edit">✏</button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <!-- No Data Template -->
+                    <ng-template #noData>
+                        <tbody>
+                            <tr>
+                                <td colspan="9"
+                                    class="text-center py-6 text-slate-200 bg-slate-800 border-t border-slate-700">
+                                    No users found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div *ngIf="selectedUser"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div
+                class="bg-slate-900 text-white rounded-2xl p-4 md:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl relative border border-purple-700">
+                <button class="absolute top-2 right-2 text-red-400 hover:text-red-500 text-2xl font-bold"
+                    (click)="closeModal()">&times;</button>
+                <h2 class="text-lg md:text-xl font-semibold mb-4 border-b border-slate-600 pb-2 text-purple-300">👤 User Details
+                </h2>
+                <div class="space-y-1 text-xs md:text-sm text-slate-300">
+                    <p><strong>ID:</strong> {{ selectedUser.id }}</p>
+                    <p><strong>Name:</strong> {{ selectedUser.firstName }}</p>
+                    <p><strong>Last Name:</strong> {{ selectedUser.lastName }}</p>
+                    <p><strong>Maiden Name:</strong> {{ selectedUser.maidenName }}</p>
+                    <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+                    <p><strong>Phone:</strong> {{ selectedUser.phone }}</p>
+                    <p><strong>Age:</strong> {{ selectedUser.age }}</p>
+                    <p><strong>Gender:</strong> {{ selectedUser.gender }}</p>
+
+                    <p><strong>Username:</strong> {{ selectedUser.username }}</p>
+                    <p><strong>Password:</strong> {{ selectedUser.password }}</p>
+                    <p><strong>Blood Group:</strong> {{ selectedUser.bloodGroup }}</p>
+                    <p><strong>Birthdate:</strong> {{ selectedUser.birthDate }}</p>
+                    <p><strong>Hair:</strong> {{ selectedUser.hair.color }} - {{ selectedUser.hair.type }}</p>
+                    <p><strong>Height:</strong> {{ selectedUser.height }} cm</p>
+                    <p><strong>Weight:</strong> {{ selectedUser.weight }} kg</p>
+                    <p><strong>Eye Color:</strong> {{ selectedUser.eyeColor }}</p>
+                    <p><strong>IP:</strong> {{ selectedUser.ip }}</p>
+                    <p><strong>Address:</strong> {{ selectedUser.address.address }}, {{ selectedUser.address.city }}, {{
+                        selectedUser.address.state }}</p>
+                    <p><strong>Country:</strong> {{ selectedUser.address.country}}</p>
+                    <p><strong>Mac Address:</strong> {{ selectedUser.macAddress }}</p>
+                    <p><strong>University:</strong> {{ selectedUser.university }}</p>
+                    <p><strong>Role:</strong> {{ selectedUser.role }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

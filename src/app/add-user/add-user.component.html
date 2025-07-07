@@ -1,0 +1,200 @@
+<div class="min-h-screen bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8 font-outfit text-white">
+  <!-- Stepper - Responsive -->
+  <ol class="flex flex-col sm:flex-row justify-center items-start sm:items-center mb-6 md:mb-10 gap-4 sm:gap-8 max-w-3xl mx-auto">
+    <li *ngFor="let label of ['Personal Info', 'Address', 'Account Info']; let i = index"
+      class="flex items-center gap-3 w-full sm:w-auto">
+      <!-- Step indicator -->
+      <div class="w-8 h-8 flex items-center justify-center rounded-full font-semibold" [ngClass]="{
+             'bg-purple-600 text-white': step >= i + 1,
+             'bg-slate-600 text-slate-300': step < i + 1
+           }">
+        {{ i + 1 }}
+      </div>
+      
+      <!-- Step label - hidden on mobile -->
+      <span class="hidden sm:inline text-sm font-medium" [ngClass]="{
+              'text-purple-300 font-bold': step === i + 1,
+              'text-slate-300': step !== i + 1
+            }">
+        {{ label }}
+      </span>
+      
+      <!-- Connector - hidden on mobile -->
+      <div *ngIf="i < 2" class="hidden sm:block w-8 h-1 bg-purple-400 rounded-full"></div>
+      
+      <!-- Mobile label - shown only on mobile -->
+      <span class="sm:hidden text-sm font-medium ml-2" [ngClass]="{
+              'text-purple-300 font-bold': step === i + 1,
+              'text-slate-300': step !== i + 1
+            }">
+        {{ label }}
+      </span>
+    </li>
+  </ol>
+
+  <!-- Form - Responsive padding -->
+  <form [formGroup]="form"
+    class="max-w-4xl mx-auto bg-slate-900/80 text-white rounded-xl md:rounded-2xl shadow-xl p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6 border border-purple-700">
+
+    <!-- Step 1 - Responsive -->
+    <div *ngIf="step === 1" class="grid grid-cols-1 gap-4 md:gap-6">
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">Full Name</label>
+        <input formControlName="fullName" placeholder="Full Name"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base" />
+        <p *ngIf="form.get('fullName')?.touched && form.get('fullName')?.invalid" class="text-red-400 text-xs mt-1">
+          <span *ngIf="form.get('fullName')?.errors?.['required']">Full name is required</span>
+          <span *ngIf="form.get('fullName')?.errors?.['minlength']">Minimum 3 characters</span>
+        </p>
+      </div>
+
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">Email</label>
+        <input formControlName="email" placeholder="Email"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base" />
+        <p *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-red-400 text-xs mt-1">
+          <span *ngIf="form.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="form.get('email')?.errors?.['email']">Invalid email</span>
+        </p>
+      </div>
+
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">Phone Number</label>
+        <input formControlName="phone" placeholder="Phone Number" maxlength="10" type="tel"
+          (keypress)="allowOnlyNumbers($event)"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base" />
+        <p *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid" class="text-red-400 text-xs mt-1">
+          <span *ngIf="form.get('phone')?.errors?.['required']">Phone is required</span>
+          <span *ngIf="form.get('phone')?.errors?.['pattern']">Must be 10 digits</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 2 - Responsive -->
+    <div *ngIf="step === 2" class="grid grid-cols-1 gap-4 md:gap-6">
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">Country</label>
+        <select formControlName="country" (change)="onCountryChange($event)"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base">
+          <option value="">Select Country</option>
+          <option *ngFor="let c of countries" [value]="c.iso2">{{ c.name }}</option>
+        </select>
+        <p *ngIf="form.get('country')?.touched && form.get('country')?.invalid" class="text-red-400 text-xs mt-1">
+          Country is required
+        </p>
+      </div>
+
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">State</label>
+        <select formControlName="state" class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base">
+          <option value="">Select State</option>
+          <option *ngFor="let s of states" [value]="s.name">{{ s.name }}</option>
+        </select>
+        <p *ngIf="form.get('state')?.touched && form.get('state')?.invalid" class="text-red-400 text-xs mt-1">
+          State is required
+        </p>
+      </div>
+
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">District</label>
+        <input formControlName="district" placeholder="District"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base" />
+        <p *ngIf="form.get('district')?.touched && form.get('district')?.invalid" class="text-red-400 text-xs mt-1">
+          District is required
+        </p>
+      </div>
+
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">Zip Code</label>
+        <input formControlName="zipCode" placeholder="Zip Code" maxlength="6" type="tel"
+          (keypress)="allowOnlyNumbers($event)"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base" />
+        <p *ngIf="form.get('zipCode')?.touched && form.get('zipCode')?.invalid" class="text-red-400 text-xs mt-1">
+          Zip Code is required and must be 6 digits
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 3 - Responsive -->
+    <div *ngIf="step === 3" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <div>
+        <label class="text-purple-300 text-sm md:text-base">Username</label>
+        <input formControlName="username" placeholder="Username"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base" />
+        <p *ngIf="form.get('username')?.touched && form.get('username')?.invalid" class="text-red-400 text-xs mt-1">
+          <span *ngIf="form.get('username')?.errors?.['required']">Username is required</span>
+          <span *ngIf="form.get('username')?.errors?.['minlength']">Min 4 characters</span>
+        </p>
+      </div>
+
+      <div class="relative">
+        <label class="text-purple-300 text-sm md:text-base">Password</label>
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password"
+          class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full pr-10 text-white text-sm md:text-base" />
+        <button type="button" (click)="togglePasswordVisibility()"
+          class="absolute right-3 top-[2.1rem] md:top-[2.5rem] text-slate-400 hover:text-white text-sm">
+          {{ showPassword ? '🙈' : '👁️' }}
+        </button>
+        <p *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-red-400 text-xs mt-1">
+          <span *ngIf="form.get('password')?.errors?.['required']">Required</span>
+          <span *ngIf="form.get('password')?.errors?.['minlength']">Min 6 chars</span>
+          <span *ngIf="form.get('password')?.errors?.['pattern']">Letter + Number</span>
+        </p>
+      </div>
+
+      <div class="md:col-span-2">
+        <label class="text-purple-300 text-sm md:text-base">Role</label>
+        <select formControlName="role" class="bg-slate-800 border border-purple-600 rounded-lg p-2 md:p-3 w-full text-white text-sm md:text-base">
+          <option value="">Select Role</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+          <option value="viewer">Viewer</option>
+        </select>
+        <p *ngIf="form.get('role')?.touched && form.get('role')?.invalid" class="text-red-400 text-xs mt-1">
+          Please select a role
+        </p>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons - Responsive -->
+    <div class="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-4">
+      <button *ngIf="step > 1" type="button" 
+        class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded shadow text-sm md:text-base"
+        (click)="prev()">
+        ⬅ Back
+      </button>
+      <div class="flex justify-end gap-3">
+        <button *ngIf="step < 3" type="button"
+          class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow text-sm md:text-base w-full sm:w-auto"
+          (click)="next()">
+          Next ➡
+        </button>
+        <button *ngIf="step === 3" type="button"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow text-sm md:text-base w-full sm:w-auto"
+          (click)="submit()">
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Toast Notification - Responsive -->
+  <div *ngIf="showToast" 
+    class="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-lg z-50 text-sm md:text-base">
+    ✅ User added successfully!
+  </div>
+
+  <!-- JSON Output - Responsive -->
+  <div *ngIf="submittedData"
+    class="mt-6 md:mt-10 bg-slate-900/80 p-4 md:p-6 rounded-lg shadow-xl max-w-4xl mx-auto text-xs md:text-sm text-slate-200 border border-purple-700">
+    <h3 class="text-lg md:text-xl font-semibold mb-2 md:mb-3 text-purple-300">📦 Submitted Data:</h3>
+    <pre class="whitespace-pre-wrap overflow-x-auto">{{ submittedData | json }}</pre>
+  </div>
+
+  <!-- Go Back - Responsive -->
+  <div class="mt-4 md:mt-6 text-center">
+    <button (click)="goBack()" class="underline text-slate-300 hover:text-white text-sm md:text-base">
+      ← Go back to home page
+    </button>
+  </div>
+</div>
